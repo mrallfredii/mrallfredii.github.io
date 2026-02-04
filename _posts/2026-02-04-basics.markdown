@@ -1,0 +1,8 @@
+---
+layout: post
+title:  "Basics"
+date:   2026-02-04 08:37:18 +0100
+categories: jekyll update
+---
+
+this is a test for the basics
