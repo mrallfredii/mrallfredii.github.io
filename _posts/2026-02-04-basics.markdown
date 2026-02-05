@@ -3,6 +3,29 @@ layout: post
 title:  "Basics"
 date:   2026-02-04 08:37:18 +0100
 categories: jekyll update
+author: mrallfredii
+tags: basic begginer
 ---
 
-this is a test for the basics
+## Networking
+
+The 7 Layers of the OSI Model
+
+* Physical Layer (Layer 1): Handles the physical transmission of raw bits (1s and 0s) over a medium (cables, Wi-Fi).
+
+* Data Link Layer (Layer 2): Manages error-free data transfer between directly connected nodes, using MAC addresses.
+
+* Network Layer (Layer 3): Responsible for logical addressing (IP addresses) and routing data across different networks.
+
+* Transport Layer (Layer 4): Ensures reliable (TCP) or fast (UDP) data delivery between end systems, handling segmentation and reassembly.
+
+* Session Layer (Layer 5): Establishes, manages, and terminates communication sessions between applications.
+
+* Presentation Layer (Layer 6): Translates data, handles encryption/decryption, and compresses data for the Application Layer.
+
+* Application Layer (Layer 7): The user-facing layer, providing network services for applications like web browsers and email clients.
+
+
+## Linux
+
+coming soon...

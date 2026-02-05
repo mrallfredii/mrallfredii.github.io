@@ -1,0 +1,22 @@
+---
+layout: post
+title:  "mrallfredii's info"
+date:   2026-02-05 15:17:18 +0100
+categories: jekyll update
+author: mrallfredii
+tags: about_me
+---
+
+## About me
+
+Hey there! Alfred here.
+
+I’m a Computer Engineering graduate with a strong interest in IT and cybersecurity, with hands-on experience in Linux, networking, and basic web technologies.
+
+## Contact me
+
+* [GitHub](https://github.com/mrallfredii)
+
+* [LinkedIn](https://www.linkedin.com/in/alfred-manuel-martinez/)
+
+* [Twitter / X](https://twitter.com/mrallfredii)

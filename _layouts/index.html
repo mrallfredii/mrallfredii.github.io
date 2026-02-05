@@ -2,10 +2,17 @@
 layout: default
 ---
 
-{%- for post in site.posts -%}
-    <div>
-        <h1>{{ post.title }}</h1>
-        <h2>{{ post.content }}</h2>
-        <a href="{{ post.url }}">Go to basics</a>
-    </div>
-{%- endfor -%}
+<div class="posts-list" style="padding-top: 20px;">
+    {%- for post in site.posts -%}
+        <article style="margin-bottom: 50px; background-color:rgb(33, 43, 15); cursor: default;"> 
+            <header style="padding-left: 10px;">
+                <span style="color: #666; font-family: monospace;">{{ post.date | date: "%Y-%m-%d" }}</span>
+                <h2 style="margin-top: 5px; color: azure; text-align: center;">
+                    {{ post.title }}
+                </h2>
+            </header>
+
+            <a href="{{ post.url }}" class="read-more" style="text-decoration: none; padding-left: 10px; color:#666">Read more</a>
+        </article>
+    {%- endfor -%}
+</div>
