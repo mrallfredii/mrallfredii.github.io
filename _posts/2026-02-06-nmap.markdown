@@ -1,0 +1,44 @@
+---
+layout: post
+title:  "NMAP"
+date:   2026-02-06 08:37:18 +0100
+categories: jekyll update
+author: mrallfredii
+tags: nmap
+---
+
+# NMAP
+
+## Ping Sweep (discover live hosts):
+
+nmap -sn 192.168.1.0/24
+
+-sn: ping scan
+
+## TCP Connect Scan
+
+nmap -sT 192.168.1.100
+
+-sT: completes the 3 way handshake
+
+## **SYN Scan** (stealth scan):
+
+sudo nmap -sS 192.168.1.100
+-sS: Only sends SYN, does not complete handshake
+
+## **UDP Scan**:
+
+sudo nmap -sU 192.168.1.100
+
+-sU: udp port scan
+
+## Params
+
+- -p # Specify ports: -p 80,443 or -p- (all)
+- -sV # Version detection (detects service versions)
+- -O # OS detection (detects operating system)
+- -A # Aggressive scan (sV + O + scripts + traceroute)
+- -T0-T5 # Timing (T0=paranoid, T4=aggressive)
+- -oN # Normal output to file
+- -oX # XML output
+- --script # Run NSE scripts

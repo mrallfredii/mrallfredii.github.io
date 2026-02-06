@@ -28,6 +28,11 @@ The Open Systems Interconnection (OSI) model is the standard for how different c
 - **Frames (Layer 2):** Think of this as an envelope used to move data inside a single building (LAN). It uses **MAC addresses**.
 - **Packets (Layer 3):** Think of this as the mail that goes across the country. It uses **IP addresses**.
 
+## TCP vs UDP
+
+- TCP: reliable connection, 3-way handshake (SYN, SYN-ACK, ACK)
+- UDP: Offline, faster, used in DNS, streaming
+
 # 2. How the Web Works
 
 ## DNS: The Internet's Phonebook
@@ -39,6 +44,38 @@ DNS (Domain Name System) translates `google.com` into an IP address like `142.25
 - **Verbs:** `GET` (give me data), `POST` (here is data), `PUT` (update data).
 - **Headers:** These contain metadata (cookies, browser type).
 - **Statelessness:** HTTP doesn't remember who you are. That’s why we use **Cookies** and **JWTs** (JSON Web Tokens). If you steal a cookie, you "become" the user without needing their password (Session Hijacking).
+
+## Ports
+
+- 21: FTP
+- 22: SSH
+- 23: Telnet
+- 25: SMTP
+- 53: DNS
+- 80: HTTP
+- 443: HTTPS
+- 445: SMB (printers)
+- 3306: MySQL
+- 3389: RDP
+- 8080: HTTP alternative
+
+## IPs
+
+Private IPs (NOT routable on the Internet):
+
+- Class A: 10.0.0.0/8
+
+- Class B: 172.16.0.0/12
+
+- Class C: 192.168.0.0/16
+
+CIDR (Classless Inter-Domain Routing):
+
+- /24 = 255.255.255.0 = 254 hosts
+
+- /16 = 255.255.0.0 = 65,534 hosts
+
+- /8  = 255.0.0.0 = 16,777,214 hosts
 
 # Linux Fundamentals
 
