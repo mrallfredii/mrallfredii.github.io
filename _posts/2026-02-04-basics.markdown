@@ -7,25 +7,65 @@ author: mrallfredii
 tags: basic begginer
 ---
 
-## Networking
+# Hacking Basics
 
-The 7 Layers of the OSI Model
+# 1. Network Fundamentals
 
-* Physical Layer (Layer 1): Handles the physical transmission of raw bits (1s and 0s) over a medium (cables, Wi-Fi).
+## The OSI Model
 
-* Data Link Layer (Layer 2): Manages error-free data transfer between directly connected nodes, using MAC addresses.
+The Open Systems Interconnection (OSI) model is the standard for how different computer systems communicate.
 
-* Network Layer (Layer 3): Responsible for logical addressing (IP addresses) and routing data across different networks.
+| LAYER | NAME | UNIT | WHAT HAPPENS |
+| --- | --- | --- | --- |
+| 7 | Application | Data | HTTP, DNS, SMTP (The UI/UX level). |
+| 4 | Transport | Segments | TCP (reliable) and UDP (fast). Port numbers live here. |
+| 3 | Network | Packets | IP addresses. Routing data across different networks. |
+| 2 | Data Link | Frames | MAC addresses. Connecting two physical devices on a LAN. |
+| 1 | Physical | Bits | The actual cables, fiber optics, or Wi-Fi radio waves. |
 
-* Transport Layer (Layer 4): Ensures reliable (TCP) or fast (UDP) data delivery between end systems, handling segmentation and reassembly.
+## Packets vs Frames
 
-* Session Layer (Layer 5): Establishes, manages, and terminates communication sessions between applications.
+- **Frames (Layer 2):** Think of this as an envelope used to move data inside a single building (LAN). It uses **MAC addresses**.
+- **Packets (Layer 3):** Think of this as the mail that goes across the country. It uses **IP addresses**.
 
-* Presentation Layer (Layer 6): Translates data, handles encryption/decryption, and compresses data for the Application Layer.
+# 2. How the Web Works
 
-* Application Layer (Layer 7): The user-facing layer, providing network services for applications like web browsers and email clients.
+## DNS: The Internet's Phonebook
 
+DNS (Domain Name System) translates `google.com` into an IP address like `142.250.190.46`.
 
-## Linux
+## HTTP/HTTPS: The Language of the Web
 
-coming soon...
+- **Verbs:** `GET` (give me data), `POST` (here is data), `PUT` (update data).
+- **Headers:** These contain metadata (cookies, browser type).
+- **Statelessness:** HTTP doesn't remember who you are. That’s why we use **Cookies** and **JWTs** (JSON Web Tokens). If you steal a cookie, you "become" the user without needing their password (Session Hijacking).
+
+# Linux Fundamentals
+
+## 1. The File System
+
+| DIRECTORY | RED TEAM CARES ABOUT |
+| --- | --- |
+| /etc | Contains system configuration files. `/etc/passwd` lists users, and `/etc/shadow` contains encrypted password hashes. |
+| /var/log | This is where your tracks are recorded. |
+| /tmp - /dev/shm | These are world-writable. You’ll often download your scripts or exploits here because you have permission to write to them. |
+| /root | The home directory for the superuser. |
+| /proc | A virtual filesystem providing info about running processes. |
+
+## 2. Permissions & Privilege Escalation
+
+### Understanding the "RWX" bits
+
+- **User / Group / Others:** Permissions are split into these three tiers.
+- **Sticky Bits & SUID:** If a file has the **SUID bit** set (e.g., `rwsr-xr-x`), it runs with the permissions of the **owner** (often root), not the user who started it.
+
+### Key Commands for Escalation
+
+- `sudo -l`: Lists what commands your current user can run as root.
+- `find / -perm -u=s -type f 2>/dev/null`: Finds all SUID files on the system.
+- `id`: Tells you who you are and what groups you belong to (look for `sudo` or `admin` groups).
+
+## 3. The Red Team Command Kit
+
+- **`grep` / `awk` / `sed`:** For parsing massive log files to find passwords or IP addresses.
+- **`ssh` & `scp`:** For moving laterally through a network and exfiltrating data.
