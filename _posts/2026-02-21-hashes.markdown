@@ -1,0 +1,54 @@
+---
+layout: post
+title:  "NMAP"
+date:   2026-02-21 11:22:18 +0100
+categories: jekyll update
+author: mrallfredii
+tags: hashes passwords cracking
+---
+
+## Password Hashes
+
+| **Categoría** | **Nombre del Algoritmo** | **Modo -m** | **Ejemplo de Identificador** |
+| --- | --- | --- | --- |
+| **Básicos** | **MD5** | `0` | `5d41402abc4b2a76b9...` |
+|  | **SHA1** | `100` | `b1b3773a05c0ed01...` |
+|  | **SHA2-256** | `1400` | `5e884898da28047151...` |
+| **Windows** | **NTLM** (Local/SAM) | `1000` | `b4b9b02e6f09a9bd76...` |
+|  | **Net-NTLMv2** (Red/Responder) | `5600` | `admin::domain:1122...` |
+|  | **Kerberos 5 (TGS-REP)** | `13100` | `$krb5tgs$23$*user...` |
+| **Linux** | **SHA-512 crypt** (`/etc/shadow`) | `1800` | `$6$rounds=5000$...` |
+|  | **bcrypt** | `3200` | `$2a$10$abcdef...` |
+| **Web / DB** | **MySQL 4.1 / MySQL 5** | `300` | `*2470C0C06DEE42...` |
+|  | **PostgreSQL** | `2100` | `md5...` (específico PG) |
+|  | **WordPress (MD5 PHP)** | `400` | `$P$B12345678...` |
+|  | **Joomla (MD5 + Salt)** | `11` | `hash:salt` |
+| **Archivos** | **PDF 1.7 Level 8** | `10700` | `$pdf$5*6*...` |
+|  | **RAR5** | `13000` | `$rar5$16$...` |
+|  | **SSH Priv Key (RSA/DSA)** | `22921` | `$ssh2$19$...` |
+
+### 1. Guía Visual Rápida (Hashes "Raw" o Puros)
+
+Estos no tienen símbolos, son solo cadenas de texto (generalmente hexadecimales: 0-9 y a-f).
+
+| **Hash** | **Longitud (Caracteres)** | **Ejemplo Visual** |
+| --- | --- | --- |
+| **MD5** | 32 | `5d41402abc4b2a76b9719d911017c592` |
+| **NTLM** | 32 | `b4b9b02e6f09a9bd760f388b67351e2b` |
+| **SHA1** | 40 | `b1b3773a05c0ed0176787a4f1574ff0075f7521e` |
+| **SHA256** | 64 | `5e884898da28047151d0e56f8dc6292773603d...` |
+
+**2. Guía de Firmas (Hashes con formato)**
+Muchos hashes modernos incluyen una "firma" al principio para que el sistema sepa cómo leerlos.
+**A. Linux (`/etc/shadow`)**
+Busca el número entre los primeros símbolos `$`:
+• `$1$...` $\rightarrow$ **MD5 crypt**
+• `$2a$...` o `$2b$...` $\rightarrow$ **bcrypt**
+• `$5$...` $\rightarrow$ **SHA-256**
+• `$6$...` $\rightarrow$ **SHA-512** (El más común en Linux moderno).
+**B. Red (Capturas de Responder/SMB)**
+• **Net-NTLMv2:** Es inconfundible porque es larguísimo y tiene este formato: `Usuario::Dominio:Desafío:Hash:Sal`.
+    ◦ *Ejemplo:* `admin::WORKGROUP:1122334455667788:0A1B2C...`
+**C. Bases de Datos**
+• **MySQL 5:** Siempre empieza con un asterisco `*` seguido de 40 caracteres hexadecimales.
+    ◦ *Ejemplo:* `*2470C0C06DEE42FD1618BB99005AD2109572424`
