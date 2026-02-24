@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  "eJPT"
+title:  "eJPT L2"
 date:   2026-02-19 14:44:32 +0100
 categories: jekyll update
 author: mrallfredii
