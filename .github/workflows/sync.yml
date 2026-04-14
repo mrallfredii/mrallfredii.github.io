@@ -1,20 +1,21 @@
 name: Notion Sync
 on:
-  workflow_dispatch: # Esto activa el botón para hacerlo manual
+  workflow_dispatch:
   schedule:
-    - cron: '0 * * * *' # Revisa cada hora automáticamente
+    - cron: '0 * * * *'
 
 jobs:
   notion_to_jekyll:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Notion to Markdown
-        uses: m-radzikowski/notion-github-sync@v1
+        uses: dvanoni/notion-github-sync@main
         with:
           notion_token: ${{ secrets.NOTION_TOKEN }}
           notion_database_id: ${{ secrets.NOTION_DATABASE_ID }}
-          output_path: _posts # Carpeta donde Jekyll guarda las notas
+          output_path: _posts
           filter_prop: Publicar
           filter_value: true
