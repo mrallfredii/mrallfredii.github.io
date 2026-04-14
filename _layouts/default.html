@@ -4,10 +4,8 @@
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}">
+    <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.time | date: '%s' | relative_url }}">
     {% include head-custom.html %}
-
-{% seo %}
   </head>
 
   <body>
@@ -15,9 +13,15 @@
     <header>
       <div class="container">
         <a id="a-title" href="{{ '/' | relative_url }}">
-          <h1>{{ site.title | default: site.github.repository_name }}</h1>
+          <h1>{{ site.title }}</h1>
         </a>
-        <h2>{{ site.description | default: site.github.project_tagline }}</h2>
+        <h2>{{ site.description }}</h2>
+        <nav style="margin-top: 20px; display: flex; gap: 18px; flex-wrap: wrap; font-family: monospace;">
+          <a href="{{ '/' | relative_url }}" style="color: #9fef00; text-decoration: none;">[Home]</a>
+          <a href="{{ '/hacking-course/' | relative_url }}" style="color: #9fef00; text-decoration: none;">[Hacking Course]</a>
+          <a href="{{ '/about/' | relative_url }}" style="color: #9fef00; text-decoration: none;">[About]</a>
+          <a href="{{ '/about/contact/' | relative_url }}" style="color: #9fef00; text-decoration: none;">[Contact]</a>
+        </nav>
       </div>
     </header>
     
