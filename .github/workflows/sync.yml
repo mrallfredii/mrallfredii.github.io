@@ -5,17 +5,23 @@ on:
     - cron: '0 * * * *'
 
 jobs:
-  notion_to_jekyll:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
+      - name: Checkout Repo
         uses: actions/checkout@v4
 
-      - name: Notion to Markdown
-        uses: dvanoni/notion-github-sync@main
+      - name: Set up Python
+        uses: actions/setup-python@v4
         with:
-          notion_token: ${{ secrets.NOTION_TOKEN }}
-          notion_database_id: ${{ secrets.NOTION_DATABASE_ID }}
-          output_path: _posts
-          filter_prop: Publicar
-          filter_value: true
+          python-python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install notion-client
+
+      - name: Run Sync Script
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        run: |
+          uses: victornpb/notion-to-jekyll@master
