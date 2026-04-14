@@ -3,17 +3,53 @@ on:
   workflow_dispatch:
 
 jobs:
-  notion_to_github:
+  notion_to_jekyll:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Notion to Markdown
-        uses: dvanoni/notion-github-sync@main
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          notion_token: ${{ secrets.NOTION_TOKEN }}
-          notion_database_id: ${{ secrets.NOTION_DATABASE_ID }}
-          output_path: _posts
-          filter_prop: Publicar
-          filter_value: true
+          python-version: '3.x'
+
+      - name: Install Dependencies
+        run: pip install notion-client
+
+      - name: Run Sync
+        env:
+          NOTION_TOKEN: ${{ secrets.NOTION_TOKEN }}
+          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+        run: |
+          python - <<EOF
+          import os
+          from notion_client import Client
+          from datetime import datetime
+
+          notion = Client(auth=os.environ["NOTION_TOKEN"])
+          db_id = os.environ["NOTION_DATABASE_ID"]
+
+          results = notion.databases.query(
+              database_id=db_id,
+              filter={"property": "Publicar", "checkbox": {"equals": True}}
+          ).get("results")
+
+          for page in results:
+              title = page["properties"]["Page"]["title"][0]["plain_text"]
+              date = datetime.now().strftime("%Y-%m-%d")
+              filename = f"_posts/{date}-{title.lower().replace(' ', '-')}.md"
+              
+              with open(filename, "w", encoding="utf-8") as f:
+                  f.write(f"---\nlayout: post\ntitle: \"{title}\"\ndate: {date}\n---\n\n")
+                  # Esto crea el archivo básico. Luego puedes mejorar el contenido.
+                  f.write("Contenido sincronizado desde Notion.")
+          EOF
+
+      - name: Commit and Push
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add _posts/*.md
+          git commit -m "Sync from Notion" || exit 0
+          git push
