@@ -1,6 +1,7 @@
 :root {
     font-family: 'Inter';
     line-height: 1.5;
+    font-size: 15px;
 
     --color-principal: #191919;
     --text-color: #FFFFFF;
@@ -19,5 +20,8 @@ body {
     padding: 2rem;
     box-sizing: border-box;
     background-color: var(--color-principal);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 

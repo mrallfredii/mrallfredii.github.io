@@ -1,0 +1,39 @@
+.contenido {
+    background-color: red;
+    width: 50vw;
+    height: 180px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    margin-bottom: 3rem;
+    transition: all 0.3s ease;
+}
+
+.contenido:nth-child(odd) {
+    align-self: flex-start;
+}
+
+.contenido:nth-child(even) {
+    align-self: flex-end;
+}
+
+.contenido a {
+    background-color: green;
+}
+
+.contenido:hover {
+    transform: scale(1.02);
+}
+
+a {
+    color: #FFFFFF;
+    text-decoration: none;
+    font-size: 1.4rem;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #9B9B9B;
+    font-size: 1.5rem;
+}
