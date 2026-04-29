@@ -1,0 +1,13 @@
+#apuntes {
+    background-color: red;
+}
+
+a {
+    color: #FFFFFF;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+    color: #9B9B9B;
+}

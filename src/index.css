@@ -1,0 +1,23 @@
+:root {
+    font-family: 'Inter';
+    line-height: 1.5;
+
+    --color-principal: #191919;
+    --text-color: #FFFFFF;
+    --fuente-base: 16px;
+}
+
+body {
+    margin: 0;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+}
+
+#root {
+    width: 100%;
+    min-height: 100vh;
+    padding: 2rem;
+    box-sizing: border-box;
+    background-color: var(--color-principal);
+}
+
