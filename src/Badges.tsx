@@ -1,4 +1,6 @@
 import './Badges.css'
+import thmLogo from '../src/assets/thm.png'; 
+import htbLogo from '../src/assets/htb.png';
 
 const Badges = () => {
   return (
@@ -17,11 +19,11 @@ const Badges = () => {
           <br />
 
           <a href="https://tryhackme.com/p/mrallfredii" target="_blank">
-            <img src="./src/assets/thm.png" width={300} height={160}/>
+            <img src={thmLogo} alt="TryHackMe" width={300} height={160}/>
           </a>
 
           <a href="https://profile.hackthebox.com/profile/019daa3e-ef99-718b-9f2e-dc6b621b5d3b" target="_blank">
-            <img src="./src/assets/htb.png" width={300} height={160}/>
+            <img src={htbLogo} alt="HackTheBox" width={300} height={160}/>
           </a>
         </div>
 
