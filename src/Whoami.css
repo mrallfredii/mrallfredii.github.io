@@ -1,0 +1,125 @@
+.container {
+    width: 80%;
+    height: 100%;
+    border-radius: 12px;
+    font-size: 22px;
+}
+
+.card {
+    background-color: #373e40;
+    cursor: default;
+    user-select: none;
+    width: auto;
+    height: auto;
+    margin: 8px;
+    border-radius: 12px;
+    padding: 13px;
+}
+
+.card h1 {
+    font-size: 60px;
+    text-align: center;
+    font-family: "Climate Crisis", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+    "YEAR" 1989;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.card h1::after {
+    content: "|";
+    color: white;
+    animation: parpadeo 0.8s infinite;
+}
+
+@keyframes parpadeo {
+    0% { opacity: 1; }
+    50% { opacity: 0; }
+    100% { opacity: 1; }
+}
+
+p {
+    font-family: "Basic", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 24px;
+    cursor: default;
+    user-select: none;
+}
+
+.terminal-user {
+    color: #448361;
+    font-weight: bold;
+    margin-right: 5px;
+    cursor: default;
+    user-select: none;
+    font-size: 22px;
+}
+
+.socials {
+    background-color: #373e40;
+    border-radius: 12px;
+    cursor: default;
+}
+
+h2 {
+    font-size: 60px;
+    text-align: center;
+    font-family: "Climate Crisis", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    font-variation-settings:
+    "YEAR" 1989;
+}
+
+.social-links {
+  display: flex;
+  gap: 15px;
+  margin-top: 10px;
+  justify-content: center;
+  text-align: center;
+}
+
+.social-btn {
+  padding: 20px 28px;
+  background: #1e293b;
+  color: #e2e8f0;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: 0.2s;
+  margin-bottom: 30px;
+}
+
+.social-btn:hover {
+  background: #38bdf8;
+  color: #0f172a;
+}
+
+.back-btn {
+    display: block;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: white;
+    padding: 16px 28px;
+    border-radius: 8px;
+    font-size: 18px;
+    cursor: pointer;
+    font-family: "Basic", sans-serif;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    margin-bottom: 20px;
+    align-self: flex-end;
+    margin-left: auto; 
+    margin-right: 0;
+}
+
+.back-btn:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateX(-5px);
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.1);
+}

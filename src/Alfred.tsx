@@ -5,7 +5,7 @@ function App() {
   return (
     <div>
 
-      <h1>Alfred's Hacking Lab</h1>
+      <h1>💀 Alfred's Hacking Lab 🧪</h1>
 
       <h4>
         <span className="terminal-user">alfred@root:</span> cat info.txt

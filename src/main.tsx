@@ -5,6 +5,8 @@ import './index.css'
 import Alfred from './Alfred.tsx'
 import Contenido from './Contenido.tsx'
 import Whoami from './Whoami.tsx'
+import Ctf from './Ctf.tsx'
+import Footer from './Footer.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -17,23 +19,26 @@ createRoot(document.getElementById('root')!).render(
 
             <Contenido 
               enlace="https://chatter-griffin-2ff.notion.site/Hacking-Course-31ea4a2de9b4805792d9f8c47a954407" 
-              texto="Metodologías Hacking" 
+              texto="Metodologías Hacking 📖" 
             />
 
             <Contenido 
-              enlace="coming soon" 
-              texto="CTF's" 
+              enlace="ctf" 
+              texto="CTF's 🏴" 
             />
 
             <Contenido 
               enlace="/whoami" 
-              texto="whoami" 
+              texto="whoami 💻" 
             />
+
+            <Footer />
 
           </>
         } />
 
         <Route path='/whoami' element={<Whoami />} />
+        <Route path='/ctf' element={<Ctf />} />
 
       </Routes>
     </BrowserRouter>
