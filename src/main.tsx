@@ -8,10 +8,12 @@ import Whoami from './Whoami.tsx'
 import Ctf from './Ctf.tsx'
 import Footer from './Footer.tsx'
 import Badges from './Badges.tsx'
+import ScrollToTop from './ScrollToTop.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <BrowserRouter>
+      <ScrollToTop />
       <Routes>
         <Route path='/' element={
           <>
