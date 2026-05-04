@@ -23,4 +23,12 @@ export const MACHINES_DATA = [
         level: 'Facil',
         os: 'Linux'
     },
+    { 
+        id: 4, 
+        name: 'GoldenEye', 
+        url: 'https://chatter-griffin-2ff.notion.site/Writeup-golden-eye-345a4a2de9b480e59e1ad840510c797c',
+        platform: 'TryHackMe',
+        level: 'Media',
+        os: 'Linux'
+    },
 ];
