@@ -1,11 +1,7 @@
 import { useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import './Ctf.css'
-
-const MACHINES_DATA = [
-    { id: 1, name: 'Infovore', platform: 'VulnHub', level: 'Facil', os: 'Linux' },
-    // { id: 2, name: 'Machine Y', platform: 'HackTheBox', level: 'Media', os: 'Linux' },
-];
+import { MACHINES_DATA } from './data';
 
 const Ctf = () => {
     const navigate = useNavigate();
@@ -31,8 +27,6 @@ const Ctf = () => {
             </button>
 
             <h1>Capture the flag</h1>
-
-            (coming soon...)
 
             {/* --- SECCIÓN DE FILTROS --- */}
             <div className="filters-section">
@@ -71,19 +65,26 @@ const Ctf = () => {
                     {filteredMachines.length > 0 ? (
                         filteredMachines.map(machine => (
                             <div key={machine.id} className="machine-card">
-                                <h2 className='maquina_name'>{machine.name}</h2>
-                                    
-                                <h3 className='plataforma'>
-                                    <span className="label">[Plataforma]</span> {machine.platform}
-                                </h3>
-                                    
-                                <h3 className='nivel'>
-                                    <span className="label">[Nivel]</span> {machine.level}
-                                </h3>
-                                    
-                                <h3 className='os'>
-                                    <span className="label">[OS]</span> {machine.os}
-                                </h3>
+                                <a 
+                                    href={machine.url} 
+                                    target="_blank" 
+                                    rel="noopener noreferrer" 
+                                    className='card-link'
+                                >
+                                    <h2 className='maquina_name'>{machine.name}</h2>
+                                        
+                                    <h3 className='plataforma'>
+                                        <span className="label">[Plataforma]</span> {machine.platform}
+                                    </h3>
+                                        
+                                    <h3 className='nivel'>
+                                        <span className="label">[Nivel]</span> {machine.level}
+                                    </h3>
+                                        
+                                    <h3 className='os'>
+                                        <span className="label">[OS]</span> {machine.os}
+                                    </h3>
+                                </a>
                             </div>
                         ))
                     ) : (

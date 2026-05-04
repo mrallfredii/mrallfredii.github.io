@@ -33,6 +33,7 @@
     padding: 20px;
     border-radius: 10px;
     cursor: default;
+    overflow: hidden;
 }
 
 .input {
@@ -48,4 +49,10 @@ h2 {
     font-weight: bold;
     margin-right: 5px;
     opacity: 0.8;
+}
+
+.card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
 }

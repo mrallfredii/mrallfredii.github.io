@@ -12,8 +12,12 @@
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
+    "notion-client": "^7.10.0",
+    "notion-types": "^7.10.0",
     "react": "^19.2.5",
     "react-dom": "^19.2.5",
+    "react-notion": "^0.10.0",
+    "react-notion-x": "^7.10.0",
     "react-router-dom": "^7.14.2"
   },
   "devDependencies": {
