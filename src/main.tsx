@@ -9,6 +9,7 @@ import Ctf from './Ctf.tsx'
 import Footer from './Footer.tsx'
 import Badges from './Badges.tsx'
 import ScrollToTop from './ScrollToTop.tsx'
+import Scripts from './Scripts.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
@@ -30,6 +31,11 @@ createRoot(document.getElementById('root')!).render(
               texto="CTF's 🏴" 
             />
 
+            <Contenido
+              enlace='/scripts'
+              texto='scripts 📃'
+            />
+
             <Contenido 
               enlace="/whoami" 
               texto="whoami 💻" 
@@ -44,6 +50,7 @@ createRoot(document.getElementById('root')!).render(
 
         <Route path='/whoami' element={<Whoami />} />
         <Route path='/ctf' element={<Ctf />} />
+        <Route path='/scripts' element={<Scripts />} />
 
       </Routes>
     </BrowserRouter>
