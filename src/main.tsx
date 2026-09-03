@@ -1,6 +1,6 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { HashRouter, Routes, Route } from 'react-router-dom'
 import './index.css'
 import Alfred from './Alfred.tsx'
 import Contenido from './Contenido.tsx'
@@ -13,7 +13,7 @@ import Scripts from './Scripts.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
-    <BrowserRouter>
+    <HashRouter>
       <ScrollToTop />
       <Routes>
         <Route path='/' element={
@@ -53,6 +53,6 @@ createRoot(document.getElementById('root')!).render(
         <Route path='/scripts' element={<Scripts />} />
 
       </Routes>
-    </BrowserRouter>
+    </HashRouter>
   </StrictMode>,
 )
