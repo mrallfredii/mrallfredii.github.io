@@ -1,5 +1,6 @@
 import './Whoami.css'
 import { useNavigate } from 'react-router-dom';
+import cv from '../src/assets/Alfred_Manuel_Martinez_CV_eng.pdf'; 
 
 const Whoami = () => {
   const navigate = useNavigate();
@@ -31,6 +32,13 @@ const Whoami = () => {
             <p>
               ------------------------------------------------------------------------------------------------------------------------------
             </p>
+        </div>
+
+        <div className="card-cv">
+          <iframe className='iframe'
+            src={`${cv}#zoom=125`}
+          >
+          </iframe>
         </div>
 
         <div className='socials'>
